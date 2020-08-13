@@ -13,6 +13,7 @@
  */
 package com.oneops.boo.yaml;
 
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,6 +31,17 @@ public class AssemblyBean {
 
 	@JsonProperty("tags")
 	private Map<String, String> tags;
+
+	@JsonProperty("teams")
+	private List<String> teams;
+
+	public List<String> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(List<String> teams) {
+		this.teams = teams;
+	}
 
 	public String getName() {
 		return name;
