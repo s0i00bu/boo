@@ -734,16 +734,45 @@ public abstract class AbstractWorkflow {
   public boolean createAssemblyIfNotExist() throws OneOpsClientAPIException {
     boolean isExist = this.isAssemblyExist();
     if (!isExist) {
-      this.checkAssemblyName();
-      LOG.debug("creating assembly {} with tags: {}", assemblyBean.getName(), assemblyBean.getTags());
-      assembly.createAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), "", assemblyBean.getDescription(), assemblyBean.getTags());
-        if (assemblyBean.getTeams()!= null && !assemblyBean.getTeams().isEmpty()){
-            LOG.debug("creating assembly {} with teams: {}", assemblyBean.getName(), assemblyBean.getTeams());
-            assembly.addTeamsByAssembly(config.getYaml().getBoo().getOrg(), assemblyBean.getName(), assemblyBean.getTeams());
-        }
-    }
+        this.checkAssemblyName();
+        LOG.debug("creating assembly {} with tags: {}", assemblyBean.getName(), assemblyBean.getTags());
+        if (assemblyBean.getSite()!= null && !assemblyBean.getSite().isEmpty()){
+              LOG.debug("creating assembly {} with site: {}", assemblyBean.getName(), assemblyBean.getSite());
+              String site = StringUtils.join(assemblyBean.getSite(), ",");
+              assembly.createAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), "", assemblyBean.getDescription(), assemblyBean.getTags(), site);
+          }else {
+              assembly.createAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), "", assemblyBean.getDescription(), assemblyBean.getTags());
+          }
+          if (assemblyBean.getTeams()!= null && !assemblyBean.getTeams().isEmpty()){
+              LOG.debug("creating assembly {} with teams: {}", assemblyBean.getName(), assemblyBean.getTeams());
+              assembly.addTeamsByAssembly(config.getYaml().getBoo().getOrg(), assemblyBean.getName(), assemblyBean.getTeams());
+          }
+      }
     return true;
   }
+
+    /**
+     * Updates If the assembly is exist.
+     *
+     * @return true, if successful
+     * @throws OneOpsClientAPIException the one ops client API exception
+     */
+    public boolean updateAssemblyExist() throws OneOpsClientAPIException {
+        boolean isExist = this.isAssemblyExist();
+        if (isExist) {
+            this.checkAssemblyName();
+            LOG.debug("update assembly {} with tags: {}", assemblyBean.getName(), assemblyBean.getTags());
+            if (assemblyBean.getSite()!= null && !assemblyBean.getSite().isEmpty()){
+                LOG.debug("update assembly {} with market site: {}", assemblyBean.getName(), assemblyBean.getSite());
+                String site = StringUtils.join(assemblyBean.getSite(), ",");
+                assembly.updateAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), assemblyBean.getDescription(), assemblyBean.getTags(), site);
+            }else {
+                assembly.updateAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), assemblyBean.getDescription(), assemblyBean.getTags());
+            }
+        }
+        return true;
+    }
+
 
   /**
    * Check assembly name.
@@ -810,7 +839,7 @@ public abstract class AbstractWorkflow {
   /**
    * Checks if is env exist.
    *
-   * @param platformName the platform name
+   * @param envName the envName name
    * @return true, if is env exist
    */
   public boolean isEnvExist(String envName) {

@@ -42,6 +42,25 @@ public class BooBean {
   @JsonProperty(value = "gzip_enabled", defaultValue = "true")
   private boolean gzipEnabled = true;
 
+  @JsonProperty("comments")
+  private String comments;
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getComments() {
+    return comments;
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
   public boolean isEnable() {
     return enable;
   }

@@ -101,6 +101,9 @@ public class BuildAllPlatforms extends AbstractWorkflow {
     }
     this.bar.update(1, 100);
     this.createAssemblyIfNotExist();
+    if (isUpdate){
+      this.updateAssemblyExist();
+    }
     this.bar.update(5, 100);
     this.createPlatforms(isUpdate);
     this.bar.update(15, 100);
@@ -171,6 +174,11 @@ public class BuildAllPlatforms extends AbstractWorkflow {
     while (retry && retries > 0) {
       utils.waitTimeout(2);
       try {
+        if (null!=config.getYaml().getBoo().getComments() && !config.getYaml().getBoo().getComments().isEmpty()) {
+          this.comments = config.getYaml().getBoo().getComments();
+        }else {
+          StringUtils.isEmpty(this.comments);
+        }
         deployment = this.deploy(eb.getEnvName(), isUpdate);
         retry = false;
       } catch (Exception e) {

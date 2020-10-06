@@ -35,6 +35,17 @@ public class AssemblyBean {
 	@JsonProperty("teams")
 	private List<String> teams;
 
+	@JsonProperty("site")
+	private List<String> site;
+
+	public List<String> getSite() {
+		return site;
+	}
+
+	public void setSite(List<String> site) {
+		this.site = site;
+	}
+
 	public List<String> getTeams() {
 		return teams;
 	}
