@@ -736,17 +736,11 @@ public abstract class AbstractWorkflow {
     if (!isExist) {
         this.checkAssemblyName();
         LOG.debug("creating assembly {} with tags: {}", assemblyBean.getName(), assemblyBean.getTags());
-        if (assemblyBean.getSite()!= null && !assemblyBean.getSite().isEmpty()){
-              LOG.debug("creating assembly {} with site: {}", assemblyBean.getName(), assemblyBean.getSite());
-              String site = StringUtils.join(assemblyBean.getSite(), ",");
-              assembly.createAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), "", assemblyBean.getDescription(), assemblyBean.getTags(), site);
-          }else {
-              assembly.createAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), "", assemblyBean.getDescription(), assemblyBean.getTags());
-          }
-          if (assemblyBean.getTeams()!= null && !assemblyBean.getTeams().isEmpty()){
-              LOG.debug("creating assembly {} with teams: {}", assemblyBean.getName(), assemblyBean.getTeams());
-              assembly.addTeamsByAssembly(config.getYaml().getBoo().getOrg(), assemblyBean.getName(), assemblyBean.getTeams());
-          }
+        assembly.createAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), "", assemblyBean.getDescription(), assemblyBean.getTags(), assemblyBean.getSite());
+        if (assemblyBean.getTeams()!= null && !assemblyBean.getTeams().isEmpty()){
+            LOG.debug("creating assembly {} with teams: {}", assemblyBean.getName(), assemblyBean.getTeams());
+            assembly.addTeamsByAssembly(config.getYaml().getBoo().getOrg(), assemblyBean.getName(), assemblyBean.getTeams());
+        }
       }
     return true;
   }
@@ -762,17 +756,10 @@ public abstract class AbstractWorkflow {
         if (isExist) {
             this.checkAssemblyName();
             LOG.debug("update assembly {} with tags: {}", assemblyBean.getName(), assemblyBean.getTags());
-            if (assemblyBean.getSite()!= null && !assemblyBean.getSite().isEmpty()){
-                LOG.debug("update assembly {} with market site: {}", assemblyBean.getName(), assemblyBean.getSite());
-                String site = StringUtils.join(assemblyBean.getSite(), ",");
-                assembly.updateAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), assemblyBean.getDescription(), assemblyBean.getTags(), site);
-            }else {
-                assembly.updateAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), assemblyBean.getDescription(), assemblyBean.getTags());
-            }
+            assembly.updateAssembly(assemblyBean.getName(), config.getYaml().getBoo().getEmail(), assemblyBean.getDescription(), assemblyBean.getTags(), assemblyBean.getSite());
         }
         return true;
     }
-
 
   /**
    * Check assembly name.
