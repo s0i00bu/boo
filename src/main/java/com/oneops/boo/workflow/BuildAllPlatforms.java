@@ -174,10 +174,8 @@ public class BuildAllPlatforms extends AbstractWorkflow {
     while (retry && retries > 0) {
       utils.waitTimeout(2);
       try {
-        if (null!=config.getYaml().getBoo().getComments() && !config.getYaml().getBoo().getComments().isEmpty()) {
+        if (null!=config.getYaml().getBoo().getComments() && StringUtils.isNoneBlank(config.getYaml().getBoo().getComments())) {
           this.comments = config.getYaml().getBoo().getComments();
-        }else {
-          StringUtils.isEmpty(this.comments);
         }
         deployment = this.deploy(eb.getEnvName(), isUpdate);
         retry = false;
